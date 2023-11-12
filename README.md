@@ -1,6 +1,6 @@
 # DetectU
 
-Get anyone exact location by just sending a link.
+Get anyone's exact location by just sending a link.
 
 This project is inspired by [TrackDown](https://github.com/Th30neAnd0nly/TrackDown)
 
@@ -10,27 +10,28 @@ This project is inspired by [TrackDown](https://github.com/Th30neAnd0nly/TrackDo
 
 1. **Clone the Repository**
 
-   ```bash
-   git clone https://github.com/Armanidrisi/DetectU.git
-   cd DetectU
-   ```
+    ```bash
+    git clone https://github.com/Armanidrisi/DetectU.git
+    cd DetectU
+    ```
 
 2. **Install Dependencies**
 
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 
 3. **Set Environment Variables**
-   Create a .env file in the root directory and provide the following variables:
+    Create a .env file in the root directory and provide the following variables:
 
-```bash
-BOT_TOKEN=<Your Telegram Bot Token>
-BASE_URL=<Your Base URL>
-PORT=<Your Preferred Port>
-```
+    ```bash
+    BOT_TOKEN=<Your Telegram Bot Token>
+    BASE_URL=<Your Base URL>
+    PORT=<Your Preferred Port>
+    ```
 
 4. **Running the server**
-```bash
-node server
-```
+
+    ```bash
+    node server
+    ```
