@@ -1,4 +1,5 @@
 const { Telegraf, Markup } = require("telegraf");
+const axios = require("axios");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -29,8 +30,26 @@ bot.on("text", async (ctx) => {
 
     if (/^(http:\/\/|https:\/\/)/.test(url)) {
       const HOST = process.env.BASE_URL;
-      const u =
-        HOST + "/u/" + btoa(url) + "/" + ctx.message.from.id.toString(36);
+      let u = HOST + "/u/" + btoa(url) + "/" + ctx.message.from.id.toString(36);
+      try {
+        const response = await axios.post(
+          "https://owo.vc/api/v2/link",
+          {
+            link: u,
+            generator: "owo",
+            metadata: "IGNORE",
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        u = "https://" + response.data.id;
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
       ctx.reply(
         `New links have been created successfully. You can use any one of the below links.\n\n✅Here Your Links\n\n${u}\n${u}`,
         Markup.inlineKeyboard([
@@ -43,5 +62,4 @@ bot.on("text", async (ctx) => {
   }
 });
 
-
-module.exports =bot
+module.exports = bot;
