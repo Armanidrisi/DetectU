@@ -1,0 +1,32 @@
+{
+  "name": "trackit",
+  "version": "1.0.0",
+  "description": "Track anyone by sending a link.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Armanidrisi/track-it.git"
+  },
+  "author": "Arman idrisi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Armanidrisi/track-it/issues"
+  },
+  "homepage": "https://github.com/Armanidrisi/track-it#readme",
+  "dependencies": {
+    "axios": "^1.6.1",
+    "base64-to-image": "^1.0.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "telegraf": "^4.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
